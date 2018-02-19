@@ -113,6 +113,13 @@ const classCommon = {
     optional: true,
     validate: assertNodeType("Expression"),
   },
+  mixinApplications: {
+    optional: true,
+    validate: chain(
+      assertValueType("array"),
+      assertEach(assertNodeType("Expression")),
+    ),
+  },
   superTypeParameters: {
     validate: assertNodeType(
       "TypeParameterInstantiation",
@@ -137,7 +144,7 @@ defineType("ClassDeclaration", {
     "id",
     "body",
     "superClass",
-    "mixins",
+    "mixinApplications",
     "typeParameters",
     "superTypeParameters",
     "implements",

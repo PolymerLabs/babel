@@ -3,6 +3,17 @@ import { types as t } from "@babel/core";
 export default function() {
   return {
     visitor: {
+      ClassDeclaration(path) {
+        const { node } = path;
+        if (node.mixinApplications && node.mixinApplications.length > 0) {
+          const newSuper = node.mixinApplications.reduceRight(
+            (s, m) => t.callExpression(t.cloneNode(m), [s]),
+            t.cloneNode(node.superClass),
+          );
+          node.superClass = newSuper;
+        }
+      },
+
       MixinDeclaration(path) {
         const { node } = path;
         const clone = t.cloneNode(node);

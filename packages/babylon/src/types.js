@@ -621,6 +621,7 @@ export type Class = ClassDeclaration | ClassExpression;
 export type ClassBase = HasDecorators & {
   id: ?Identifier,
   superClass: ?Expression,
+  mixinApplications: ?$ReadOnlyArray<Expression>,
   body: ClassBody,
   decorators: $ReadOnlyArray<Decorator>,
 

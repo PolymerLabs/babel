@@ -1323,6 +1323,10 @@ export default class StatementParser extends ExpressionParser {
 
   parseClassSuper(node: N.Class): void {
     node.superClass = this.eat(tt._extends) ? this.parseExprSubscripts() : null;
+    // TODO(justinfagnani): support multiple mixins
+    node.mixinApplications = this.eat(tt._with)
+      ? [this.parseExprSubscripts()]
+      : null;
   }
 
   // Parses module export declaration.
