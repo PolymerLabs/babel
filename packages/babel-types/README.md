@@ -276,7 +276,7 @@ Aliases: `Scopable`, `Class`, `Statement`, `Declaration`, `Pureish`
  - `abstract`: `boolean` (default: `null`)
  - `declare`: `boolean` (default: `null`)
  - `implements`: `Array<TSExpressionWithTypeArguments | ClassImplements>` (default: `null`)
- - `mixins` (default: `null`)
+ - `mixins`: `null` (default: `null`)
  - `superTypeParameters`: `TypeParameterInstantiation | TSTypeParameterInstantiation` (default: `null`)
  - `typeParameters`: `TypeParameterDeclaration | TSTypeParameterDeclaration | Noop` (default: `null`)
 
@@ -296,7 +296,7 @@ Aliases: `Scopable`, `Class`, `Expression`, `Pureish`
  - `body`: `ClassBody` (required)
  - `decorators`: `Array<Decorator>` (default: `null`)
  - `implements`: `Array<TSExpressionWithTypeArguments | ClassImplements>` (default: `null`)
- - `mixins` (default: `null`)
+ - `mixins`: `null` (default: `null`)
  - `superTypeParameters`: `TypeParameterInstantiation | TSTypeParameterInstantiation` (default: `null`)
  - `typeParameters`: `TypeParameterDeclaration | TSTypeParameterDeclaration | Noop` (default: `null`)
 
@@ -1325,6 +1325,48 @@ See also `t.isMixedTypeAnnotation(node, opts)` and `t.assertMixedTypeAnnotation(
 
 Aliases: `Flow`, `FlowType`, `FlowBaseAnnotation`
 
+
+---
+
+### mixinDeclaration
+```javascript
+t.mixinDeclaration(id, superClass, body, decorators)
+```
+
+See also `t.isMixinDeclaration(node, opts)` and `t.assertMixinDeclaration(node, opts)`.
+
+Aliases: `Scopable`, `Class`, `Statement`, `Declaration`, `Pureish`
+
+ - `id`: `Identifier` (default: `null`)
+ - `superClass`: `Expression` (default: `null`)
+ - `body`: `ClassBody` (required)
+ - `decorators`: `Array<Decorator>` (default: `null`)
+ - `abstract`: `boolean` (default: `null`)
+ - `declare`: `boolean` (default: `null`)
+ - `implements`: `Array<TSExpressionWithTypeArguments | ClassImplements>` (default: `null`)
+ - `mixins`: `null` (default: `null`)
+ - `superTypeParameters`: `TypeParameterInstantiation | TSTypeParameterInstantiation` (default: `null`)
+ - `typeParameters`: `TypeParameterDeclaration | TSTypeParameterDeclaration | Noop` (default: `null`)
+
+---
+
+### mixinExpression
+```javascript
+t.mixinExpression(id, superClass, body, decorators)
+```
+
+See also `t.isMixinExpression(node, opts)` and `t.assertMixinExpression(node, opts)`.
+
+Aliases: `Scopable`, `Class`, `Expression`, `Pureish`
+
+ - `id`: `Identifier` (default: `null`)
+ - `superClass`: `Expression` (default: `null`)
+ - `body`: `ClassBody` (required)
+ - `decorators`: `Array<Decorator>` (default: `null`)
+ - `implements`: `Array<TSExpressionWithTypeArguments | ClassImplements>` (default: `null`)
+ - `mixins`: `null` (default: `null`)
+ - `superTypeParameters`: `TypeParameterInstantiation | TSTypeParameterInstantiation` (default: `null`)
+ - `typeParameters`: `TypeParameterDeclaration | TSTypeParameterDeclaration | Noop` (default: `null`)
 
 ---
 

@@ -178,6 +178,8 @@ export const keywords = {
   this: new KeywordTokenType("this", { startsExpr }),
   super: new KeywordTokenType("super", { startsExpr }),
   class: new KeywordTokenType("class"),
+  // TODO(justinfagnani): make this a contextual keyword instead
+  mixin: new KeywordTokenType("mixin"),
   extends: new KeywordTokenType("extends", { beforeExpr }),
   export: new KeywordTokenType("export"),
   import: new KeywordTokenType("import", { startsExpr }),

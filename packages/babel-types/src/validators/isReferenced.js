@@ -96,6 +96,11 @@ export default function isReferenced(node: Object, parent: Object): boolean {
     case "ClassExpression":
       return parent.id !== node;
 
+    // no: class NODE {}
+    case "MixinDeclaration":
+    case "MixinExpression":
+      return parent.id !== node;
+
     // yes: class { [NODE]() {} }
     case "ClassMethod":
     case "ObjectMethod":

@@ -101,6 +101,10 @@ export default class StatementParser extends ExpressionParser {
         if (!declaration) this.unexpected();
         return this.parseClass(node, true);
 
+      case tt._mixin:
+        if (!declaration) this.unexpected();
+        return this.parseMixin(node, true);
+
       case tt._if:
         return this.parseIfStatement(node);
       case tt._return:
@@ -866,6 +870,26 @@ export default class StatementParser extends ExpressionParser {
     );
   }
 
+  // Parse a mixin declaration or literal (depending on the
+  // `isStatement` parameter).
+
+  parseMixin<T: N.Mixin>(
+    node: T,
+    isStatement: /* T === MixinDeclaration */ boolean,
+    optionalId?: boolean,
+  ): T {
+    this.expectPlugin("mixins");
+    this.next();
+    this.takeDecorators(node);
+    this.parseClassId(node, isStatement, optionalId);
+    this.parseClassSuper(node);
+    this.parseClassBody(node);
+    return this.finishNode(
+      node,
+      isStatement ? "MixinDeclaration" : "MixinExpression",
+    );
+  }
+
   isClassProperty(): boolean {
     return this.match(tt.eq) || this.match(tt.semi) || this.match(tt.braceR);
   }
@@ -1368,6 +1392,8 @@ export default class StatementParser extends ExpressionParser {
       return this.parseFunction(expr, true, false, true, true);
     } else if (this.match(tt._class)) {
       return this.parseClass(expr, true, true);
+    } else if (this.match(tt._mixin)) {
+      return this.parseMixin(expr, true, true);
     } else if (this.match(tt.at)) {
       this.parseDecorators(false);
       return this.parseClass(expr, true, true);

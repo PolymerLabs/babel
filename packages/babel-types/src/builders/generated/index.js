@@ -225,6 +225,14 @@ export function ClassExpression(...args: Array<any>): Object {
   return builder("ClassExpression", ...args);
 }
 export { ClassExpression as classExpression };
+export function MixinDeclaration(...args: Array<any>): Object {
+  return builder("MixinDeclaration", ...args);
+}
+export { MixinDeclaration as mixinDeclaration };
+export function MixinExpression(...args: Array<any>): Object {
+  return builder("MixinExpression", ...args);
+}
+export { MixinExpression as mixinExpression };
 export function ExportAllDeclaration(...args: Array<any>): Object {
   return builder("ExportAllDeclaration", ...args);
 }

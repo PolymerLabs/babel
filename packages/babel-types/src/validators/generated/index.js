@@ -173,6 +173,12 @@ export function isClassDeclaration(node: Object, opts?: Object): boolean {
 export function isClassExpression(node: Object, opts?: Object): boolean {
   return is("ClassExpression", node, opts);
 }
+export function isMixinDeclaration(node: Object, opts?: Object): boolean {
+  return is("MixinDeclaration", node, opts);
+}
+export function isMixinExpression(node: Object, opts?: Object): boolean {
+  return is("MixinExpression", node, opts);
+}
 export function isExportAllDeclaration(node: Object, opts?: Object): boolean {
   return is("ExportAllDeclaration", node, opts);
 }

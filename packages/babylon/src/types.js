@@ -47,6 +47,7 @@ export type Pattern =
 export type Declaration =
   | VariableDeclaration
   | ClassDeclaration
+  | MixinDeclaration
   | FunctionDeclaration
   | TsInterfaceDeclaration
   | TsTypeAliasDeclaration
@@ -719,6 +720,22 @@ export type ClassDeclaration = OptClassDeclaration & {
 };
 
 export type ClassExpression = ClassBase & { type: "ClassExpression" };
+
+export type Mixin = MixinDeclaration | MixinExpression;
+
+export type OptMixinDeclaration = ClassBase &
+  DeclarationBase &
+  HasDecorators & {
+    type: "MixinDeclaration",
+    // TypeScript only
+    abstract?: ?true,
+  };
+
+export type MixinDeclaration = OptMixinDeclaration & {
+  id: Identifier,
+};
+
+export type MixinExpression = ClassBase & { type: "MixinExpression" };
 
 export type MetaProperty = NodeBase & {
   type: "MetaProperty",

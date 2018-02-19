@@ -21,8 +21,9 @@ export const reservedWords = {
 
 // And the keywords
 
+// TODO(justinfagnani): make "mixin" a contextual keyword instead
 export const isKeyword = makePredicate(
-  "break case catch continue debugger default do else finally for function if return switch throw try var while with null true false instanceof typeof void delete new in this let const class extends export import yield super",
+  "break case catch continue debugger default do else finally for function if return switch throw try var while with null true false instanceof typeof void delete new in this let const class mixin extends export import yield super",
 );
 
 // ## Character categories

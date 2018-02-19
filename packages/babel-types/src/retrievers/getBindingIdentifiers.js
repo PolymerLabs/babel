@@ -101,6 +101,9 @@ getBindingIdentifiers.keys = {
   ClassDeclaration: ["id"],
   ClassExpression: ["id"],
 
+  MixinDeclaration: ["id"],
+  MixinExpression: ["id"],
+
   RestElement: ["argument"],
   UpdateExpression: ["argument"],
 

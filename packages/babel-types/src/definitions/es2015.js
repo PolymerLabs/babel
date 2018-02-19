@@ -194,6 +194,14 @@ defineType("ClassExpression", {
   },
 });
 
+defineType("MixinDeclaration", {
+  inherits: "ClassDeclaration",
+});
+
+defineType("MixinExpression", {
+  inherits: "ClassExpression",
+});
+
 defineType("ExportAllDeclaration", {
   visitor: ["source"],
   aliases: [

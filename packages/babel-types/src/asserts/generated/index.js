@@ -219,6 +219,12 @@ export function assertClassDeclaration(node: Object, opts?: Object = {}): void {
 export function assertClassExpression(node: Object, opts?: Object = {}): void {
   assert("ClassExpression", node, opts);
 }
+export function assertMixinDeclaration(node: Object, opts?: Object = {}): void {
+  assert("MixinDeclaration", node, opts);
+}
+export function assertMixinExpression(node: Object, opts?: Object = {}): void {
+  assert("MixinExpression", node, opts);
+}
 export function assertExportAllDeclaration(
   node: Object,
   opts?: Object = {},
