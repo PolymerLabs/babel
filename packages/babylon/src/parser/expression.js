@@ -34,6 +34,11 @@ export default class ExpressionParser extends LValParser {
     isStatement: boolean,
     optionalId?: boolean,
   ) => N.Class;
+  +parseMixin: (
+    node: N.Mixin,
+    isStatement: boolean,
+    optionalId?: boolean,
+  ) => N.Mixin;
   +parseDecorators: (allowExport?: boolean) => void;
   +parseFunction: <T: N.NormalFunction>(
     node: T,
@@ -840,6 +845,11 @@ export default class ExpressionParser extends LValParser {
         node = this.startNode();
         this.takeDecorators(node);
         return this.parseClass(node, false);
+
+      case tt._mixin:
+        node = this.startNode();
+        this.takeDecorators(node);
+        return this.parseMixin(node, false);
 
       case tt._new:
         return this.parseNew();

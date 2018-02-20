@@ -1,7 +1,10 @@
 import { types as t } from "@babel/core";
+import MixinSyntaxPlugin from "@babel/plugin-syntax-mixins";
+const filesInsertedInto = new Set();
 
 export default function() {
   return {
+    inherits: MixinSyntaxPlugin,
     visitor: {
       ClassDeclaration(path) {
         const { node } = path;
@@ -14,75 +17,91 @@ export default function() {
         }
       },
 
-      MixinDeclaration(path) {
-        const { node } = path;
-        const clone = t.cloneNode(node);
-        const innerClassId = t.identifier("_" + node.id.name);
-        const baseParam = t.identifier("base");
+      MixinDeclaration(path, { file }) {
+        insertDefineSymbolMixin(file);
+        path.replaceWith(makeClassFactory(path.node.id, path.node));
+      },
 
-        path.replaceWithMultiple([
+      MixinExpression(path, { file }) {
+        const id = path.scope.generateUidIdentifierBasedOnNode(path.node);
+        insertDefineSymbolMixin(file);
+        path.replaceWith(
+          t.callExpression(
+            t.arrowFunctionExpression(
+              [],
+              t.blockStatement([
+                makeClassFactory(id, path.node),
+                t.returnStatement(t.cloneNode(id)),
+              ]),
+            ),
+            [],
+          ),
+        );
+      },
+    },
+  };
+}
+
+function insertDefineSymbolMixin(file) {
+  if (filesInsertedInto.has(file)) {
+    return;
+  }
+  filesInsertedInto.add(file);
+  const defineSymbolMixin = t.expressionStatement(
+    t.assignmentExpression(
+      "=",
+      t.memberExpression(t.identifier("Symbol"), t.identifier("mixin")),
+      t.logicalExpression(
+        "||",
+        t.memberExpression(t.identifier("Symbol"), t.identifier("mixin")),
+        t.callExpression(t.identifier("Symbol"), [t.stringLiteral("mixin")]),
+      ),
+    ),
+  );
+  file.scope.path.unshiftContainer("body", defineSymbolMixin);
+}
+
+function makeClassFactory(id, node) {
+  const clone = t.cloneNode(node);
+  const innerClassId = t.identifier("_" + id.name);
+  const baseParam = t.identifier("base");
+
+  return t.variableDeclaration("let", [
+    t.variableDeclarator(
+      id,
+      t.arrowFunctionExpression(
+        [baseParam],
+        t.blockStatement([
+          t.classDeclaration(
+            t.cloneNode(innerClassId),
+            clone.superClass,
+            clone.body,
+            clone.decorators,
+          ),
           t.expressionStatement(
-            t.assignmentExpression(
-              "=",
-              t.memberExpression(t.identifier("Symbol"), t.identifier("mixin")),
-              t.logicalExpression(
-                "||",
+            t.callExpression(
+              t.memberExpression(
+                t.identifier("Object"),
+                t.identifier("defineProperty"),
+              ),
+              [
+                t.memberExpression(
+                  t.cloneNode(innerClassId),
+                  t.identifier("prototype"),
+                ),
                 t.memberExpression(
                   t.identifier("Symbol"),
                   t.identifier("mixin"),
                 ),
-                t.callExpression(t.identifier("Symbol"), [
-                  t.stringLiteral("mixin"),
+                t.objectExpression([
+                  t.objectProperty(t.identifier("value"), t.cloneNode(id)),
                 ]),
-              ),
+              ],
             ),
           ),
-          t.variableDeclaration("let", [
-            t.variableDeclarator(
-              node.id,
-              t.arrowFunctionExpression(
-                [baseParam],
-                t.blockStatement([
-                  t.classDeclaration(
-                    t.cloneNode(innerClassId),
-                    clone.superClass,
-                    clone.body,
-                    clone.decorators,
-                  ),
-                  t.expressionStatement(
-                    t.callExpression(
-                      t.memberExpression(
-                        t.identifier("Object"),
-                        t.identifier("defineProperty"),
-                      ),
-                      [
-                        t.memberExpression(
-                          t.cloneNode(innerClassId),
-                          t.identifier("prototype"),
-                        ),
-                        t.memberExpression(
-                          t.identifier("Symbol"),
-                          t.identifier("mixin"),
-                        ),
-                        t.objectExpression([
-                          t.objectProperty(
-                            t.identifier("value"),
-                            t.cloneNode(node.id),
-                          ),
-                        ]),
-                      ],
-                    ),
-                  ),
-                  t.returnStatement(t.cloneNode(innerClassId)),
-                ]),
-              ),
-            ),
-          ]),
-        ]);
-      },
-
-      // MixinExpression(path, state) {
-      // },
-    },
-  };
+          t.returnStatement(t.cloneNode(innerClassId)),
+        ]),
+      ),
+    ),
+  ]);
 }
